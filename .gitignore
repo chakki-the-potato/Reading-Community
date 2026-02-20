@@ -1,0 +1,11 @@
+venv/
+check_list/
+__pycache__/
+.claude/
+.playwright-mcp/
+
+# 개인정보
+members/
+check_verification.py
+*.png
+.DS_Store
