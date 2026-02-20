@@ -548,6 +548,8 @@ th:first-child {
 
 td.pass { background: var(--success-bg); color: var(--success); font-weight: 600; }
 td.fail { background: var(--danger-bg); color: var(--danger); font-weight: 600; }
+td.paid { background: var(--success-bg); color: var(--success); font-weight: 600; }
+td.unpaid { background: var(--danger-bg); color: var(--danger); font-weight: 600; }
 
 /* ===== CTA 배너 ===== */
 .cta-section {

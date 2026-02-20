@@ -10,6 +10,18 @@ function calculatePenalty(missCount) {
   return PENALTY_CAP + (missCount - capCount) * PENALTY_AFTER_CAP;
 }
 
+// ===== 납부 데이터 =====
+let paymentsData = {};
+
+async function loadPayments() {
+  try {
+    const resp = await fetch('records/payments.json');
+    if (resp.ok) paymentsData = await resp.json();
+  } catch (e) {
+    paymentsData = {};
+  }
+}
+
 // ===== CSV 파싱 =====
 function parseSavedCSV(text) {
   if (text.charCodeAt(0) === 0xFEFF) text = text.substring(1);
@@ -33,11 +45,12 @@ function parseSavedCSV(text) {
     const penalty = cols.slice(rateIdx + 1).join(',');
     rows.push({ name, verifications, rate, penalty });
   }
+  rows.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
   return { dateColumns, rows };
 }
 
 // ===== 요약 렌더링 =====
-function renderPublicSummary(meta, dateColumns, rows) {
+function renderPublicSummary(meta, dateColumns, rows, paidMembers) {
   const activeDays = dateColumns.length;
   const memberCount = rows.length;
   const excludedDates = meta.excluded_dates || [];
@@ -57,24 +70,30 @@ function renderPublicSummary(meta, dateColumns, rows) {
   }
 
   let totalPenalty = 0;
+  let unpaidPenalty = 0;
   for (const row of rows) {
     const ok = dateColumns.filter(d => row.verifications[d]).length;
     const miss = activeDays - ok;
-    totalPenalty += calculatePenalty(miss);
+    const penalty = calculatePenalty(miss);
+    totalPenalty += penalty;
+    if (penalty > 0 && !paidMembers.includes(row.name)) {
+      unpaidPenalty += penalty;
+    }
   }
   html += `<div class="summary-item">총 벌금<strong>${totalPenalty.toLocaleString()}원</strong></div>`;
+  html += `<div class="summary-item">미납 벌금<strong>${unpaidPenalty.toLocaleString()}원</strong></div>`;
 
   document.getElementById('publicSummary').innerHTML = html;
 }
 
 // ===== 테이블 렌더링 =====
-function renderPublicTable(dateColumns, rows) {
+function renderPublicTable(dateColumns, rows, paidMembers) {
   const activeDays = dateColumns.length;
   let html = '<table><thead><tr><th>이름</th>';
   for (const d of dateColumns) {
     html += `<th>${d}</th>`;
   }
-  html += '<th>인증률</th><th>벌금</th></tr></thead><tbody>';
+  html += '<th>인증률</th><th>벌금</th><th>납부</th></tr></thead><tbody>';
 
   for (const row of rows) {
     html += `<tr><td>${row.name}</td>`;
@@ -89,6 +108,14 @@ function renderPublicTable(dateColumns, rows) {
     const penalty = calculatePenalty(miss);
     html += `<td>${rate}%</td>`;
     html += `<td>${penalty > 0 ? penalty.toLocaleString() + '원' : '-'}</td>`;
+
+    if (penalty === 0) {
+      html += '<td>-</td>';
+    } else if (paidMembers.includes(row.name)) {
+      html += '<td class="paid">완료</td>';
+    } else {
+      html += '<td class="unpaid">미납</td>';
+    }
     html += '</tr>';
   }
   html += '</tbody></table>';
@@ -96,7 +123,7 @@ function renderPublicTable(dateColumns, rows) {
 }
 
 // ===== 데이터 표시 =====
-function displayRecord(csvText, meta) {
+function displayRecord(csvText, meta, filename) {
   const parsed = parseSavedCSV(csvText);
   if (!parsed) {
     document.getElementById('noData').style.display = 'block';
@@ -106,8 +133,9 @@ function displayRecord(csvText, meta) {
 
   document.getElementById('noData').style.display = 'none';
 
-  renderPublicSummary(meta, parsed.dateColumns, parsed.rows);
-  renderPublicTable(parsed.dateColumns, parsed.rows);
+  const paidMembers = paymentsData[filename] || [];
+  renderPublicSummary(meta, parsed.dateColumns, parsed.rows, paidMembers);
+  renderPublicTable(parsed.dateColumns, parsed.rows, paidMembers);
   document.getElementById('publicContent').style.display = 'block';
 }
 
@@ -165,7 +193,7 @@ async function loadRecord(filename) {
     meta = await metaResp.json();
   }
 
-  displayRecord(csvText, meta);
+  displayRecord(csvText, meta, filename);
 }
 
 // ===== 네비게이션 스크롤 하이라이트 =====
@@ -190,6 +218,7 @@ function setupNavigation() {
 // ===== 초기화 =====
 document.addEventListener('DOMContentLoaded', async () => {
   setupNavigation();
+  await loadPayments();
   await loadRecordList();
 
   document.getElementById('recordSelector').addEventListener('change', async (e) => {
