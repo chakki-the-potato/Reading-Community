@@ -122,12 +122,48 @@ function renderPublicTable(dateColumns, rows, paidMembers) {
   document.getElementById('publicTable').innerHTML = html;
 }
 
+// ===== 예정 화면 표시 =====
+async function displayUpcoming(record) {
+  document.getElementById('noData').style.display = 'none';
+  document.getElementById('upcomingContent').style.display = 'flex';
+
+  const period = `${record.start_date.replace(/-/g, '.')} ~ ${record.end_date.replace(/-/g, '.')}`;
+  document.getElementById('upcomingPeriod').textContent = period;
+
+  // 가장 최근 실제 기록을 blur 배경으로 로드
+  const actual = recordsData.find(r => !r.upcoming && r.filename);
+  if (actual) {
+    const [csvResp, metaResp] = await Promise.all([
+      fetch(`records/${actual.filename}`),
+      fetch(`records/${actual.filename.replace('.csv', '.json')}`)
+    ]);
+    const csvText = await csvResp.text();
+    let meta = {};
+    if (metaResp.ok) meta = await metaResp.json();
+
+    const parsed = parseSavedCSV(csvText);
+    if (parsed) {
+      const paidMembers = paymentsData[actual.filename] || [];
+      renderPublicSummary(meta, parsed.dateColumns, parsed.rows, paidMembers);
+      renderPublicTable(parsed.dateColumns, parsed.rows, paidMembers);
+      const pc = document.getElementById('publicContent');
+      pc.style.display = 'block';
+      pc.classList.add('blurred');
+    }
+  }
+}
+
 // ===== 데이터 표시 =====
 function displayRecord(csvText, meta, filename) {
+  document.getElementById('upcomingContent').style.display = 'none';
+
+  const pc = document.getElementById('publicContent');
+  pc.classList.remove('blurred');
+
   const parsed = parseSavedCSV(csvText);
   if (!parsed) {
     document.getElementById('noData').style.display = 'block';
-    document.getElementById('publicContent').style.display = 'none';
+    pc.style.display = 'none';
     return;
   }
 
@@ -136,7 +172,7 @@ function displayRecord(csvText, meta, filename) {
   const paidMembers = paymentsData[filename] || [];
   renderPublicSummary(meta, parsed.dateColumns, parsed.rows, paidMembers);
   renderPublicTable(parsed.dateColumns, parsed.rows, paidMembers);
-  document.getElementById('publicContent').style.display = 'block';
+  pc.style.display = 'block';
 }
 
 // ===== 기록 선택 드롭다운 =====
@@ -159,11 +195,14 @@ function formatRecordLabel(r) {
   return dateRange || r.filename;
 }
 
+let recordsData = [];
+
 async function loadRecordList() {
   const selector = document.getElementById('recordSelector');
 
   const resp = await fetch('records/index.json');
   const data = await resp.json();
+  recordsData = data.records;
 
   if (data.records.length === 0) {
     selector.innerHTML = '<option value="">저장된 기록 없음</option>';
@@ -172,12 +211,20 @@ async function loadRecordList() {
   }
 
   selector.innerHTML = data.records.map((r, i) => {
-    const label = formatRecordLabel(r);
-    return `<option value="${r.filename}" ${i === 0 ? 'selected' : ''}>${label}</option>`;
+    const label = r.upcoming
+      ? `${r.label} (예정)`
+      : formatRecordLabel(r);
+    const value = r.upcoming ? `upcoming:${i}` : r.filename;
+    return `<option value="${value}" ${i === 0 ? 'selected' : ''}>${label}</option>`;
   }).join('');
 
   // 최신 기록 로드
-  await loadRecord(data.records[0].filename);
+  const first = data.records[0];
+  if (first.upcoming) {
+    displayUpcoming(first);
+  } else {
+    await loadRecord(first.filename);
+  }
 }
 
 async function loadRecord(filename) {
@@ -222,9 +269,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadRecordList();
 
   document.getElementById('recordSelector').addEventListener('change', async (e) => {
-    const filename = e.target.value;
-    if (filename) {
-      await loadRecord(filename);
+    const value = e.target.value;
+    if (value && value.startsWith('upcoming:')) {
+      const idx = parseInt(value.split(':')[1]);
+      displayUpcoming(recordsData[idx]);
+    } else if (value) {
+      await loadRecord(value);
     }
   });
 });

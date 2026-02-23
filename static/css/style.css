@@ -551,6 +551,78 @@ td.fail { background: var(--danger-bg); color: var(--danger); font-weight: 600; 
 td.paid { background: var(--success-bg); color: var(--success); font-weight: 600; }
 td.unpaid { background: var(--danger-bg); color: var(--danger); font-weight: 600; }
 
+/* ===== 예정 (대기화면) ===== */
+#recordDisplay {
+  position: relative;
+}
+
+#publicContent.blurred {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.7;
+}
+
+#upcomingContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upcoming-card {
+  text-align: center;
+  padding: 48px 40px;
+  background: rgba(238, 242, 255, 0.95);
+  border: 1px solid var(--primary-50);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.upcoming-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.upcoming-label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: #fff;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.upcoming-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 16px;
+}
+
+.upcoming-period {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: #fff;
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.upcoming-sub {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+}
+
 /* ===== CTA 배너 ===== */
 .cta-section {
   background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
