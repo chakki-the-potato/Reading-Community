@@ -17,6 +17,14 @@
   --gray-500: #6b7280;
   --gray-700: #374151;
   --gray-900: #111827;
+  --blue-bg: #dbeafe;
+  --blue-border: #3b82f6;
+  --green-bg: #dcfce7;
+  --green-border: #16a34a;
+  --orange-bg: #ffedd5;
+  --orange-border: #f97316;
+  --purple-bg: #f3e8ff;
+  --purple-border: #a855f7;
   --radius: 16px;
   --radius-sm: 10px;
 }
@@ -167,7 +175,11 @@ img { display: block; max-width: 100%; }
 
 /* ===== 섹션 공통 ===== */
 section {
-  padding: 72px 0;
+  padding: 56px 0;
+}
+
+.section-compact {
+  padding: 40px 0;
 }
 
 .section-label {
@@ -242,6 +254,117 @@ section {
   position: absolute;
   left: 4px;
   color: var(--gray-500);
+}
+
+/* ===== Notion-style Callout Boxes ===== */
+.callout {
+  display: flex;
+  gap: 16px;
+  padding: 20px 24px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+.callout:last-child {
+  margin-bottom: 0;
+}
+
+.callout-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.callout-body {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--gray-700);
+}
+
+.callout-body h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.callout-body p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.callout-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.callout-body ul li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 6px;
+}
+
+.callout-body ul li::before {
+  content: "•";
+  position: absolute;
+  left: 2px;
+  color: var(--gray-500);
+}
+
+.callout-body ul ul {
+  margin-top: 4px;
+  margin-left: 8px;
+}
+
+.callout-body ul ul li::before {
+  content: "–";
+}
+
+.callout-yellow {
+  background: var(--warning-bg);
+  border-left: 4px solid var(--warning-border);
+}
+
+.callout-blue {
+  background: var(--blue-bg);
+  border-left: 4px solid var(--blue-border);
+}
+
+.callout-green {
+  background: var(--green-bg);
+  border-left: 4px solid var(--green-border);
+}
+
+.callout-red {
+  background: #fee2e2;
+  border-left: 4px solid var(--danger);
+}
+
+.callout-orange {
+  background: var(--orange-bg);
+  border-left: 4px solid var(--orange-border);
+}
+
+.callout-gray {
+  background: var(--gray-100);
+  border-left: 4px solid var(--gray-300);
+}
+
+.callout-purple {
+  background: var(--purple-bg);
+  border-left: 4px solid var(--purple-border);
+}
+
+.callout-warning {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--danger);
+  font-weight: 500;
 }
 
 /* ===== 소모임 소개 ===== */
@@ -382,7 +505,7 @@ section {
 /* ===== 벌금 (다크 섹션) ===== */
 .section-dark {
   background: var(--dark);
-  padding: 72px 0;
+  padding: 56px 0;
 }
 
 .penalty-grid {
@@ -433,6 +556,45 @@ section {
   margin-top: 24px;
 }
 
+.penalty-details {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.penalty-detail-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.penalty-detail-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.penalty-detail-item strong {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 4px;
+}
+
+.penalty-detail-item p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
 /* ===== 인증 예시 ===== */
 .verify-example {
   margin: 0;
@@ -446,6 +608,65 @@ section {
   line-height: 1.8;
   max-width: 860px;
   margin: 0 auto;
+}
+
+.verify-example strong {
+  color: var(--primary);
+  font-style: normal;
+  background: rgba(79, 70, 229, 0.1);
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+/* ===== 섹션 설명 텍스트 ===== */
+.section-desc {
+  font-size: 0.95rem;
+  color: var(--gray-500);
+  margin-top: -20px;
+  margin-bottom: 28px;
+}
+
+/* ===== 책 추천 테이블 ===== */
+.recommend-table-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.recommend-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.recommend-table th {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 700;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 2px solid var(--primary-50);
+}
+
+.recommend-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-200);
+  text-align: left;
+  color: var(--gray-700);
+}
+
+.recommend-table td:first-child {
+  font-weight: 600;
+  color: var(--gray-900);
+  white-space: nowrap;
+  background: #fff;
+}
+
+.recommend-table tr:last-child td {
+  border-bottom: none;
 }
 
 /* ===== 인증 현황 ===== */
@@ -757,6 +978,22 @@ td.unpaid { background: var(--danger-bg); color: var(--danger); font-weight: 600
 
   .penalty-number {
     font-size: 1.5rem;
+  }
+
+  .penalty-details {
+    flex-direction: column;
+  }
+
+  .callout {
+    gap: 10px;
+  }
+
+  .recommend-table td:first-child {
+    white-space: normal;
+  }
+
+  .section-compact {
+    padding: 32px 0;
   }
 
   .cta-inner h2 {

@@ -40,17 +40,27 @@
 </header>
 
 <!-- 공지사항 -->
-<section id="notice">
+<section id="notice" class="section-compact">
   <div class="container">
     <p class="section-label">알림</p>
     <h2 class="section-title">공지사항</h2>
-    <div class="notice-card">
-      <p>소모임의 중요한 소식이나 변동 사항을 가장 먼저 알려드리는 공간입니다.<br>새로운 내용은 없는지 가끔씩 확인해주세요!</p>
-      <ul class="notice-list">
-        <li>원활한 소모임 운영을 위해 <strong>2주 단위</strong>로 활동 및 가입/탈퇴를 진행합니다.</li>
-        <li>탈퇴 시 누적된 벌금은 모두 정산되어야 탈퇴 처리가 완료됩니다.</li>
-        <li>벌금은 해당 분기 종료 후, 활동한 멤버들과 <strong>N빵</strong>합니다.</li>
-      </ul>
+    <div class="callout callout-yellow">
+      <div class="callout-icon">🔔</div>
+      <div class="callout-body">
+        <h4>알립니다! 필독 공지사항</h4>
+        <p>소모임의 중요한 소식이나 변동 사항을 가장 먼저 알려드리는 공간입니다.<br>새로운 내용은 없는지 가끔씩 확인해주세요!</p>
+        <ul>
+          <li>원활한 소모임 운영을 위해 <strong>2주 단위</strong>로 활동 및 가입/탈퇴를 진행합니다.</li>
+          <li><strong>탈퇴 시 유의사항:</strong> 누적된 벌금은 모두 정산되어야 탈퇴 처리가 완료됩니다.</li>
+          <li><strong>1등 보상</strong>은 한 달간의 활동을 꾸준히 기록하여 선정됩니다.
+            <ul>
+              <li>1순위: 인증 일수</li>
+              <li>2순위: 읽은 시간 합산</li>
+            </ul>
+          </li>
+          <li>월중에 탈퇴하시면 아쉽게도 <strong>보상 대상에서 제외</strong>되니, 이 점 꼭 유의해 주세요.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -112,37 +122,62 @@
 <section id="rules">
   <div class="container">
     <p class="section-label">Rules</p>
-    <h2 class="section-title">활동 규칙</h2>
+    <h2 class="section-title">✅ 활동 규칙</h2>
 
-    <div class="rules-grid">
-      <div class="rule-card">
-        <div class="rule-icon">🔥</div>
-        <h3>매일 10분 독서 인증</h3>
-        <p class="rule-tag">일일 미션</p>
-        <p>우리 소모임의 핵심 활동입니다. 양보다 꾸준함이 중요해요. 독서 자체를 즐겨주세요!</p>
+    <!-- 가입 규칙 -->
+    <div class="callout callout-gray">
+      <div class="callout-icon">❗</div>
+      <div class="callout-body">
+        <h4>가입 규칙</h4>
+        <p>원활한 소모임 운영을 위해 2주 단위로 활동 및 가입/탈퇴를 진행합니다.</p>
+        <ul>
+          <li><strong>운영 단위:</strong> 2주</li>
+          <li><strong>탈퇴 시 유의사항:</strong> 누적된 벌금은 모두 정산되어야 탈퇴 처리가 완료됩니다.</li>
+          <li>1등 보상은 한 달간의 활동을 꾸준히 기록하여 선정됩니다. (1순위 인증 일수, 2순위 읽은 시간 합산)<br>따라서 월중에 탈퇴하시면 아쉽게도 보상 대상에서는 제외되니, 이 점 꼭 유의해 주시기 바랍니다.</li>
+        </ul>
       </div>
-      <div class="rule-card">
-        <div class="rule-icon">🏆</div>
-        <h3>매달 책 한 권 끝내기</h3>
-        <p class="rule-tag">월별 미션</p>
-        <p>한 달에 한 권 완독을 목표로 달려봅시다! 완독의 뿌듯함, 함께 느껴요.</p>
+    </div>
+
+    <!-- 일일 미션 -->
+    <div class="callout callout-blue">
+      <div class="callout-icon">🔥</div>
+      <div class="callout-body">
+        <h4>📖 매일 10분 독서 및 감상평 인증 (일일 미션)</h4>
+        <p>우리 소모임의 심장과도 같은 핵심 활동입니다.<br>양보다 질! 아니, 양보다 꾸준함이 중요해요. 독서 자체를 즐겨주세요!</p>
       </div>
-      <div class="rule-card">
-        <div class="rule-icon">✅</div>
-        <h3>인증 방법</h3>
-        <p class="rule-tag">2가지 모두 수행</p>
-        <p><strong>사진 인증</strong> — 책 + 타이머<br><strong>짧은 감상평</strong> — 인상 깊었던 구절 또는 1~3줄 생각</p>
-        <p class="rule-note">글에 꼭 <strong>'읽'</strong>이라는 단어가 들어가야 분석 시 인식됩니다.</p>
+    </div>
+
+    <!-- 월별 미션 -->
+    <div class="callout callout-green">
+      <div class="callout-icon">📘</div>
+      <div class="callout-body">
+        <h4>🏆 매달 책 한 권씩 끝내기 (월별 미션)</h4>
+        <p>일일 미션만 하다 보면 한 권을 끝내기 어려울 수 있죠.<br>한 달에 한 권 완독을 목표로 달려봅시다! 완독의 뿌듯함, 함께 느껴요.</p>
+      </div>
+    </div>
+
+    <!-- 인증 방법 -->
+    <div class="callout callout-gray">
+      <div class="callout-icon">✅</div>
+      <div class="callout-body">
+        <h4>인증 방법 (2가지 모두 수행)</h4>
+        <ul>
+          <li><strong>📸 사진 인증:</strong> 책 + 타이머</li>
+          <li><strong>📝 짧은 감상평:</strong> 인상 깊었던 구절 타이핑 또는 1~3줄의 간결한 생각/느낌</li>
+        </ul>
+        <div class="callout-warning">
+          ❗️ 작성하는 글에 꼭 <strong>'읽'</strong>이라는 단어가 들어가야 분석할 때 인식이 됩니다. 꼭 포함시켜주세요.
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 벌금 규칙 (다크 섹션) -->
-<section class="section-dark">
+<section id="penalty" class="section-dark">
   <div class="container">
     <p class="section-label light">Penalty</p>
-    <h2 class="section-title light">벌금 규칙</h2>
+    <h2 class="section-title light">💸 벌금 규칙</h2>
     <p class="section-subtitle light">지갑은 두껍게, 양심은 가볍게</p>
 
     <div class="penalty-grid">
@@ -152,20 +187,97 @@
       </div>
       <div class="penalty-box">
         <p class="penalty-label">미인증 6회~</p>
-        <p class="penalty-number">1,000원<span>/회</span></p>
-        <p class="penalty-sub">10,000원 + 초과분</p>
+        <p class="penalty-number">1,000원<span>/회 추가</span></p>
+        <p class="penalty-sub">10,000원 + 초과 횟수당 1,000원</p>
       </div>
     </div>
-    <p class="penalty-note">벌금 사용처: 분기 종료 후, 해당 분기에 활동한 멤버들과 N빵!</p>
+
+    <div class="penalty-details">
+      <div class="penalty-detail-item">
+        <span class="penalty-detail-icon">😈</span>
+        <div>
+          <strong>벌금 수금 방법</strong>
+          <p>운영자가 매일 밤 여러분의 양심을 체크하고 벌금을 차곡차곡 정산합니다</p>
+        </div>
+      </div>
+      <div class="penalty-detail-item">
+        <span class="penalty-detail-icon">🧠</span>
+        <div>
+          <strong>벌금 사용처</strong>
+          <p>매월 말 '이달의 뇌섹왕'께 책 선물 🎁</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- 인증 예시 -->
-<section class="section-alt">
+<section class="section-alt section-compact">
   <div class="container">
+    <p class="section-label">Example</p>
+    <h2 class="section-title">✍️ 인증 예시</h2>
+
     <blockquote class="verify-example">
-      "오늘 15분 읽었어요! '사피엔스'에서 농업혁명 부분이 충격적이었습니다. 인간이 밀을 길들인 게 아니라 밀이 인간을 길들였다는 관점 전환이 신선했어요."
+      "오늘 15분 <strong>읽</strong>었어요! '사피엔스'에서 농업혁명 부분이 충격적이었습니다. 인간이 밀을 길들인 게 아니라 밀이 인간을 길들였다는 관점 전환이 신선했어요."
     </blockquote>
+
+    <div class="callout callout-red" style="max-width: 860px; margin: 16px auto 0;">
+      <div class="callout-icon">❗️</div>
+      <div class="callout-body">
+        <p>인증 글에 반드시 <strong>'읽'</strong>이라는 단어가 포함되어야 합니다. 자동 분석 시스템이 '읽' 키워드를 기반으로 인증 여부를 판단합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 좋았던 책 추천하기 -->
+<section id="recommend">
+  <div class="container">
+    <p class="section-label">Recommend</p>
+    <h2 class="section-title">📚 좋았던 책 추천하기 (책 영업소)</h2>
+    <p class="section-desc">최근 감명 깊게 읽었거나 "이건 나만 알 수 없다!" 싶은 인생 책을 다른 멤버들에게 영업해주세요. 당신의 영업이 성공할 때마다 뿌듯함은 덤!</p>
+
+    <div class="recommend-table-wrap">
+      <table class="recommend-table">
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>📖 책 제목 / 저자</td>
+            <td>(책 제목과 저자명을 적어주세요)</td>
+          </tr>
+          <tr>
+            <td>💡 추천 이유</td>
+            <td>(이 책을 왜 읽어보면 좋을지 간단히 설명해주세요)</td>
+          </tr>
+          <tr>
+            <td>✨ 인상 깊었던 구절</td>
+            <td>(가장 기억에 남는 문장이나 내용을 공유해주세요)</td>
+          </tr>
+          <tr>
+            <td>🎯 이런 사람에게 추천해요</td>
+            <td>(어떤 관심사나 상황에 있는 사람에게 좋을지 알려주세요)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 마무리 한마디 -->
+<section class="section-alt section-compact">
+  <div class="container">
+    <div class="callout callout-orange" style="max-width: 700px; margin: 0 auto;">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <h4>함께 읽고 함께 성장하는 독서 소모임, 책책책 책을 읽읍시다!</h4>
+        <p>질문이나 제안사항이 있으면 언제든 운영진에게 문의해주세요. 📖</p>
+      </div>
+    </div>
   </div>
 </section>
 
