@@ -610,6 +610,21 @@ section {
   margin: 0 auto;
 }
 
+.verify-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.verify-wrap .verify-example {
+  margin: 0 0 16px 0;
+  max-width: none;
+}
+
+.verify-callout {
+  margin-bottom: 0;
+  align-items: center;
+}
+
 .verify-example strong {
   color: var(--primary);
   font-style: normal;
