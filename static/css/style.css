@@ -95,11 +95,24 @@ img { display: block; max-width: 100%; }
 
 /* ===== 히어로 ===== */
 .hero {
-  background: linear-gradient(135deg, #f5f3ff 0%, #eef2ff 40%, #e0e7ff 100%);
-  padding: 80px 0 64px;
+  position: relative;
+  overflow: hidden;
+  padding: 36px 0;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+              url('../../logo_image/책 읽기 소모임.png') center/cover no-repeat;
+  filter: blur(4px);
+  z-index: 0;
 }
 
 .hero-inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 48px;
@@ -113,8 +126,8 @@ img { display: block; max-width: 100%; }
   display: inline-block;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--primary);
-  background: rgba(79, 70, 229, 0.1);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
   padding: 4px 14px;
   border-radius: 20px;
   margin-bottom: 16px;
@@ -124,14 +137,14 @@ img { display: block; max-width: 100%; }
   font-size: 2.75rem;
   font-weight: 800;
   line-height: 1.2;
-  color: var(--gray-900);
+  color: #fff;
   margin-bottom: 12px;
   letter-spacing: -0.03em;
 }
 
 .hero-quote {
   font-size: 1.1rem;
-  color: var(--gray-500);
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 24px;
 }
 
@@ -142,26 +155,15 @@ img { display: block; max-width: 100%; }
 }
 
 .value-chip {
-  background: #fff;
-  color: var(--primary);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
   padding: 8px 18px;
   border-radius: 24px;
   font-size: 0.875rem;
   font-weight: 600;
-  box-shadow: 0 1px 3px rgba(79, 70, 229, 0.12);
+  backdrop-filter: blur(4px);
 }
 
-.hero-image {
-  flex: 0 0 420px;
-}
-
-.hero-image img {
-  width: 100%;
-  height: 320px;
-  object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-}
 
 /* ===== 섹션 공통 ===== */
 section {
@@ -264,8 +266,8 @@ section {
 
 .about-image img {
   width: 100%;
-  height: 300px;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   border-radius: var(--radius);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
 }
@@ -692,12 +694,6 @@ td.unpaid { background: var(--danger-bg); color: var(--danger); font-weight: 600
     gap: 32px;
   }
 
-  .hero-image {
-    flex: none;
-    width: 100%;
-    max-width: 480px;
-  }
-
   .hero-values {
     justify-content: center;
   }
@@ -721,16 +717,8 @@ td.unpaid { background: var(--danger-bg); color: var(--danger); font-weight: 600
 }
 
 @media (max-width: 600px) {
-  .hero {
-    padding: 48px 0 40px;
-  }
-
   .hero-title {
     font-size: 2rem;
-  }
-
-  .hero-image img {
-    height: 220px;
   }
 
   section {
@@ -760,7 +748,7 @@ td.unpaid { background: var(--danger-bg); color: var(--danger); font-weight: 600
   }
 
   .about-image img {
-    height: 200px;
+    height: auto;
   }
 
   .penalty-grid {
