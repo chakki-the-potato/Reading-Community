@@ -86,11 +86,38 @@ function renderPublicSummary(meta, dateColumns, rows, paidMembers) {
   document.getElementById('publicSummary').innerHTML = html;
 }
 
+// ===== 날짜 범위 생성 =====
+function buildFullDateRange(meta, dateColumns) {
+  // start_date ~ period_end 사이의 모든 날짜를 "M/D" 형식으로 반환
+  if (!meta.start_date) return { allDates: dateColumns, futureDates: new Set() };
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const start = new Date(meta.start_date + 'T00:00:00');
+  const periodEnd = meta.period_end
+    ? new Date(meta.period_end + 'T00:00:00')
+    : new Date(meta.end_date + 'T00:00:00');
+
+  const allDates = [];
+  const futureDates = new Set();
+  const cur = new Date(start);
+  while (cur <= periodEnd) {
+    const label = `${cur.getMonth() + 1}/${cur.getDate()}`;
+    allDates.push(label);
+    if (cur > today) futureDates.add(label);
+    cur.setDate(cur.getDate() + 1);
+  }
+  return { allDates, futureDates };
+}
+
 // ===== 테이블 렌더링 =====
-function renderPublicTable(dateColumns, rows, paidMembers) {
+function renderPublicTable(dateColumns, rows, paidMembers, meta = {}) {
+  const { allDates, futureDates } = buildFullDateRange(meta, dateColumns);
   const activeDays = dateColumns.length;
+
   let html = '<table><thead><tr><th>이름</th>';
-  for (const d of dateColumns) {
+  for (const d of allDates) {
     html += `<th>${d}</th>`;
   }
   html += '<th>인증률</th><th>벌금</th><th>납부</th></tr></thead><tbody>';
@@ -98,18 +125,24 @@ function renderPublicTable(dateColumns, rows, paidMembers) {
   for (const row of rows) {
     html += `<tr><td>${row.name}</td>`;
     let ok = 0;
-    for (const d of dateColumns) {
-      const v = row.verifications[d];
-      if (v) ok++;
-      html += `<td class="${v ? 'pass' : 'fail'}">${v ? 'O' : 'X'}</td>`;
+    for (const d of allDates) {
+      if (futureDates.has(d)) {
+        html += `<td class="future">?</td>`;
+      } else {
+        const v = row.verifications[d];
+        if (v) ok++;
+        html += `<td class="${v ? 'pass' : 'fail'}">${v ? 'O' : 'X'}</td>`;
+      }
     }
     const miss = activeDays - ok;
     const rate = activeDays > 0 ? Math.round(ok / activeDays * 100) : 0;
     const penalty = calculatePenalty(miss);
     html += `<td>${rate}%</td>`;
-    html += `<td>${penalty > 0 ? penalty.toLocaleString() + '원' : '-'}</td>`;
+    html += `<td>${penalty.toLocaleString()}원</td>`;
 
-    if (penalty === 0) {
+    if (futureDates.size > 0) {
+      html += '<td>-</td>';
+    } else if (penalty === 0) {
       html += '<td>-</td>';
     } else if (paidMembers.includes(row.name)) {
       html += '<td class="paid">완료</td>';
@@ -145,7 +178,7 @@ async function displayUpcoming(record) {
     if (parsed) {
       const paidMembers = paymentsData[actual.filename] || [];
       renderPublicSummary(meta, parsed.dateColumns, parsed.rows, paidMembers);
-      renderPublicTable(parsed.dateColumns, parsed.rows, paidMembers);
+      renderPublicTable(parsed.dateColumns, parsed.rows, paidMembers, meta);
       const pc = document.getElementById('publicContent');
       pc.style.display = 'block';
       pc.classList.add('blurred');
@@ -171,14 +204,15 @@ function displayRecord(csvText, meta, filename) {
 
   const paidMembers = paymentsData[filename] || [];
   renderPublicSummary(meta, parsed.dateColumns, parsed.rows, paidMembers);
-  renderPublicTable(parsed.dateColumns, parsed.rows, paidMembers);
+  renderPublicTable(parsed.dateColumns, parsed.rows, paidMembers, meta);
   pc.style.display = 'block';
 }
 
 // ===== 기록 선택 드롭다운 =====
 function formatDateRange(r) {
-  if (r.start_date && r.end_date) {
-    return `${r.start_date.replace(/-/g, '.')} ~ ${r.end_date.replace(/-/g, '.')}`;
+  const endDate = r.period_end || r.end_date;
+  if (r.start_date && endDate) {
+    return `${r.start_date.replace(/-/g, '.')} ~ ${endDate.replace(/-/g, '.')}`;
   }
   const m = r.filename.match(/(\d{4})(\d{2})(\d{2})_(\d{4})(\d{2})(\d{2})/);
   if (m) {

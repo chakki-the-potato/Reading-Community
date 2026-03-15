@@ -1,16 +1,18 @@
 {
   "records": [
     {
-      "filename": null,
+      "filename": "2026/03/verification_record_20260309_20260315.csv",
       "start_date": "2026-03-09",
-      "end_date": "2026-03-21",
-      "label": "3월 1분기",
-      "upcoming": true
+      "end_date": "2026-03-15",
+      "period_end": "2026-03-23",
+      "label": "3월 1~15일",
+      "saved_at": "2026-03-15T23:13:34.566394"
     },
     {
       "filename": "2026/02/verification_record_20260201_20260215.csv",
       "start_date": "2026-02-01",
       "end_date": "2026-02-15",
+      "period_end": "",
       "label": "2월 1분기",
       "saved_at": "2026-02-20T12:00:00.000000"
     },
@@ -18,6 +20,7 @@
       "filename": "2025/12/verification_record_20251201_20251223.csv",
       "start_date": "2025-12-01",
       "end_date": "2025-12-23",
+      "period_end": "",
       "label": "12월",
       "saved_at": "2026-02-20T11:39:32.860536"
     },
@@ -25,6 +28,7 @@
       "filename": "2025/11/verification_record_20251117_20251130.csv",
       "start_date": "2025-11-17",
       "end_date": "2025-11-30",
+      "period_end": "",
       "label": "11월 2분기",
       "saved_at": "2026-02-20T11:39:31.696013"
     },
@@ -32,6 +36,7 @@
       "filename": "2025/11/verification_record_20251101_20251116.csv",
       "start_date": "2025-11-01",
       "end_date": "2025-11-16",
+      "period_end": "",
       "label": "11월 1분기",
       "saved_at": "2026-02-20T11:39:30.592109"
     },
@@ -39,6 +44,7 @@
       "filename": "2025/10/verification_record_20251020_20251031.csv",
       "start_date": "2025-10-20",
       "end_date": "2025-10-31",
+      "period_end": "",
       "label": "10월 2분기",
       "saved_at": "2026-02-20T11:39:29.527939"
     },
@@ -46,6 +52,7 @@
       "filename": "2025/10/verification_record_20251001_20251019.csv",
       "start_date": "2025-10-01",
       "end_date": "2025-10-19",
+      "period_end": "",
       "label": "10월 1분기",
       "saved_at": "2026-02-20T11:39:25.508893"
     },
@@ -53,6 +60,7 @@
       "filename": "2025/09/verification_record_20250915_20250930.csv",
       "start_date": "2025-09-15",
       "end_date": "2025-09-30",
+      "period_end": "",
       "label": "9월",
       "saved_at": "2026-02-20T11:39:20.663460"
     }
