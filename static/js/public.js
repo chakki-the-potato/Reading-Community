@@ -114,6 +114,7 @@ function buildFullDateRange(meta, dateColumns) {
 // ===== 테이블 렌더링 =====
 function renderPublicTable(dateColumns, rows, paidMembers, meta = {}) {
   const { allDates, futureDates } = buildFullDateRange(meta, dateColumns);
+  const dateColumnsSet = new Set(dateColumns);
   const activeDays = dateColumns.length;
 
   let html = '<table><thead><tr><th>이름</th>';
@@ -126,7 +127,7 @@ function renderPublicTable(dateColumns, rows, paidMembers, meta = {}) {
     html += `<tr><td>${row.name}</td>`;
     let ok = 0;
     for (const d of allDates) {
-      if (futureDates.has(d)) {
+      if (futureDates.has(d) || !dateColumnsSet.has(d)) {
         html += `<td class="future">?</td>`;
       } else {
         const v = row.verifications[d];
