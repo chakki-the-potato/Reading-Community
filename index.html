@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="static/css/style.css">
 <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
@@ -26,6 +26,7 @@
       <a href="#notice" class="nav-link">공지</a>
       <a href="#about" class="nav-link">소개</a>
       <a href="#rules" class="nav-link">활동 규칙</a>
+      <a href="#penalty" class="nav-link">벌금</a>
       <a href="#records" class="nav-link">인증 현황</a>
     </div>
   </div>
@@ -204,68 +205,8 @@
             </div>
           </div>
         </div>
-        <div class="bento-warning">
-          <iconify-icon icon="solar:danger-triangle-bold-duotone" aria-hidden="true"></iconify-icon>
-          <p>감상평 <strong>첫 문장</strong>에 <strong>‘읽었다’, ‘읽었습니다’</strong> 등 <strong>‘읽’</strong>이 포함되어야 인증이 반영됩니다. 놓쳐서 미인증 문제가 발생하면 직접 말씀해주시면 수정해드리겠습니다.</p>
-        </div>
       </article>
     </div>
-  </div>
-</section>
-
-<!-- 벌금 규칙 (다크 섹션) -->
-<section id="penalty" class="section-dark">
-  <div class="container penalty-wrap">
-    <header class="section-header light reveal">
-      <p class="section-label light">Penalty</p>
-      <h2 class="section-title light">벌금 규칙</h2>
-      <p class="section-subtitle light">지갑은 두껍게, 양심은 가볍게.</p>
-    </header>
-
-    <div class="penalty-display reveal">
-      <div class="penalty-row">
-        <span class="penalty-stage">미인증 <b>1~5회</b></span>
-        <span class="penalty-figure">2,000<em>원 / 회</em></span>
-      </div>
-      <div class="penalty-row">
-        <span class="penalty-stage">미인증 <b>6회~</b></span>
-        <span class="penalty-figure">10,000<em>원</em> <i>+ 초과 1회당 1,000원</i></span>
-      </div>
-    </div>
-
-    <ul class="penalty-details reveal">
-      <li>
-        <iconify-icon icon="solar:moon-sleep-bold-duotone" aria-hidden="true"></iconify-icon>
-        <div>
-          <strong>벌금 수금 방법</strong>
-          <p>운영자가 매일 밤 여러분의 양심을 체크하고 벌금을 차곡차곡 정산합니다.</p>
-        </div>
-      </li>
-      <li>
-        <iconify-icon icon="solar:users-group-two-rounded-bold-duotone" aria-hidden="true"></iconify-icon>
-        <div>
-          <strong>벌금 사용처</strong>
-          <p>활동 기간 종료 후 활동 참여자 전원에게 N빵 분배.</p>
-        </div>
-      </li>
-      <li>
-        <iconify-icon icon="solar:siren-rounded-bold-duotone" aria-hidden="true"></iconify-icon>
-        <div>
-          <strong>벌금 미납 시 퇴출</strong>
-          <p>기한 내 미납 시 관리자가 2회 납부 알림을 전송. 2회 알림 후에도 미납 시 퇴출 처리됩니다.</p>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- 인증 예시 -->
-<section class="section-example">
-  <div class="container example-wrap">
-    <header class="section-header reveal">
-      <p class="section-label">Example</p>
-      <h2 class="section-title">인증 예시</h2>
-    </header>
 
     <div class="example-grid">
       <blockquote class="verify-example reveal">
@@ -311,6 +252,52 @@
   </div>
 </section>
 
+<!-- 벌금 규칙 (다크 섹션) -->
+<section id="penalty" class="section-dark">
+  <div class="container penalty-wrap">
+    <header class="section-header light reveal">
+      <p class="section-label light">Penalty</p>
+      <h2 class="section-title light">벌금 규칙</h2>
+      <p class="section-subtitle light">지갑은 두껍게, 양심은 가볍게.</p>
+    </header>
+
+    <div class="penalty-display reveal">
+      <div class="penalty-row">
+        <span class="penalty-stage">미인증 <strong>1~5회</strong></span>
+        <span class="penalty-figure">2,000<span class="penalty-unit">원 / 회</span></span>
+      </div>
+      <div class="penalty-row">
+        <span class="penalty-stage">미인증 <strong>6회~</strong></span>
+        <span class="penalty-figure">10,000<span class="penalty-unit">원</span> <span class="penalty-note">+ 초과 1회당 1,000원</span></span>
+      </div>
+    </div>
+
+    <ul class="penalty-details reveal">
+      <li>
+        <iconify-icon icon="solar:moon-sleep-bold-duotone" aria-hidden="true"></iconify-icon>
+        <div>
+          <strong>벌금 수금 방법</strong>
+          <p>운영자가 매일 밤 여러분의 양심을 체크하고 벌금을 차곡차곡 정산합니다.</p>
+        </div>
+      </li>
+      <li>
+        <iconify-icon icon="solar:users-group-two-rounded-bold-duotone" aria-hidden="true"></iconify-icon>
+        <div>
+          <strong>벌금 사용처</strong>
+          <p>활동 기간 종료 후 활동 참여자 전원에게 N빵 분배.</p>
+        </div>
+      </li>
+      <li>
+        <iconify-icon icon="solar:siren-rounded-bold-duotone" aria-hidden="true"></iconify-icon>
+        <div>
+          <strong>벌금 미납 시 퇴출</strong>
+          <p>기한 내 미납 시 관리자가 2회 납부 알림을 전송. 2회 알림 후에도 미납 시 퇴출 처리됩니다.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
 <!-- 인증 현황 -->
 <section id="records" class="section-records">
   <div class="container">
@@ -320,6 +307,7 @@
     </header>
 
     <div class="record-selector-wrap reveal">
+      <label for="recordSelector" class="sr-only">기록 기간 선택</label>
       <select id="recordSelector">
         <option value="">기록을 불러오는 중...</option>
       </select>
@@ -337,6 +325,10 @@
           <h3 class="upcoming-title">다음 활동을 준비 중입니다</h3>
           <p class="upcoming-period" id="upcomingPeriod"></p>
           <p class="upcoming-sub">활동이 시작되면 이곳에서 인증 현황을 확인할 수 있습니다.</p>
+          <a href="https://www.instagram.com/to.eeehnahc/" target="_blank" rel="noopener noreferrer" class="upcoming-cta">
+            <span>가입 문의하기</span>
+            <iconify-icon icon="solar:arrow-right-linear" aria-hidden="true"></iconify-icon>
+          </a>
         </div>
       </div>
 
