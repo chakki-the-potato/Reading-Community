@@ -297,9 +297,49 @@ function setupNavigation() {
   sections.forEach(section => observer.observe(section));
 }
 
+// ===== 히어로 지나면 네비게이션 노출 =====
+function setupNavReveal() {
+  const nav = document.getElementById('navbar');
+  const hero = document.querySelector('.hero');
+  if (!nav || !hero) return;
+
+  if (!('IntersectionObserver' in window)) {
+    nav.classList.add('is-visible');
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      nav.classList.toggle('is-visible', !entry.isIntersecting);
+    }
+  }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
+
+  io.observe(hero);
+}
+
+// ===== 스크롤 리빌 애니메이션 =====
+function setupReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || items.length === 0) {
+    items.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    }
+  }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+  items.forEach(el => io.observe(el));
+}
+
 // ===== 초기화 =====
 document.addEventListener('DOMContentLoaded', async () => {
   setupNavigation();
+  setupNavReveal();
+  setupReveal();
   await loadPayments();
   await loadRecordList();
 

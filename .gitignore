@@ -3,6 +3,7 @@ check_list/
 __pycache__/
 .claude/
 .playwright-mcp/
+screenshots/
 
 # 개인정보
 members/

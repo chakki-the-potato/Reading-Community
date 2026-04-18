@@ -4,7 +4,7 @@
 
 ## 주요 기능
 
-- **매일 독서 인증** - 사진 증거 + 3줄 이상 감상문으로 인증
+- **매일 독서 인증** - 사진 증거 + 1줄 이상 감상문으로 인증 (시험 기간엔 사진만으로도 허용)
 - **인증 기록 조회** - 분기별 인증 현황을 테이블로 확인
 - **벌금 자동 계산** - 미인증 일수에 따른 벌금 자동 산출
 - **납부 현황 관리** - 멤버별 벌금 납부 여부 추적
@@ -67,13 +67,23 @@ python3 check_verification.py \
 | `--output, -o` | 출력 CSV 경로 (선택) |
 | `--exclude, -x` | 인증 제외일 (선택) |
 | `--label, -l` | 기록 라벨, 예: "2월 1분기" (선택) |
+| `--exam-start` | 시험 기간 시작일 YYYY-MM-DD (선택, `--exam-end`와 함께 지정) |
+| `--exam-end` | 시험 기간 종료일 YYYY-MM-DD (선택, `--exam-start`와 함께 지정) |
 
 ### 인증 조건
 
 하루 인증이 유효하려면 같은 날(오전 5시 기준) 아래 두 가지를 모두 충족해야 합니다:
 
 1. **사진** - "사진", "Photo", "동영상" 등의 메시지
-2. **감상문** - 첫 줄에 '읽' 포함, 최소 3줄 이상
+2. **감상문** - 첫 줄에 '읽' 포함, 최소 1줄 이상
+
+#### 시험 기간 예외
+
+`--exam-start`/`--exam-end` 옵션으로 지정한 날짜 범위에는 **사진만 있어도 인증**으로 인정됩니다. 감상문 대신 공부 사진을 올리는 케이스를 위한 규칙입니다.
+
+- 시험 기간 내: 사진 1장 = O (감상문 없어도 OK)
+- 시험 기간 내라도 사진 없이 감상문만 있으면 X
+- 시험 기간 밖: 기존 규칙(사진 + 감상문) 유지
 
 ## 벌금 규칙
 
@@ -106,6 +116,26 @@ python3 check_verification.py \
 - `records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv` — 날짜별 O/X 인증 기록
 - `records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.json` — 메타데이터
 - `records/index.json` — 드롭다운 목록 자동 갱신
+
+##### 시험 기간이 포함된 분기
+
+분기 중 시험 기간이 있으면 `--exam-start`/`--exam-end`를 함께 넘겨 실행합니다. 해당 날짜 범위에는 사진만 있어도 인증으로 처리됩니다.
+
+```bash
+python3 check_verification.py \
+  --members members/{YYYY}/{MM}/members_{월}{분기}.csv \
+  --start YYYY-MM-DD \
+  --end YYYY-MM-DD \
+  --output records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv \
+  --exam-start YYYY-MM-DD \
+  --exam-end YYYY-MM-DD \
+  --label "{월} {분기}" \
+  chat_export.txt
+```
+
+- 시험 기간은 `--start`~`--end` 범위 안에 있어야 합니다.
+- 시험 기간은 결과 JSON 메타에 `exam_start`/`exam_end` 필드로 기록됩니다.
+- 한쪽만 지정하면 오류가 발생하니 두 옵션을 반드시 같이 넘겨주세요.
 
 #### 1-2. 오류 직접 수정
 
@@ -194,6 +224,7 @@ python3 check_verification.py \
 - 라벨: ○월 ○분기
 - 시작일: ○○○○-○○-○○
 - 종료일: ○○○○-○○-○○
+- 시험 기간 (있으면): ○○○○-○○-○○ ~ ○○○○-○○-○○
 - 멤버: 지난 분기 멤버 파일과 동일하게 생성해줘. 추가 인원이 있으면 내가 직접 추가할게.
 
 ## 작업 순서
@@ -211,6 +242,7 @@ python3 check_verification.py \
 | 항목 | 예시 |
 |------|------|
 | 채팅 파일명 | `mission_20260406.txt` 형식 |
+| 시험 기간 | `--exam-start 2026-04-20 --exam-end 2026-04-28` 형식 |
 
 ---
 
