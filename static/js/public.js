@@ -61,14 +61,6 @@ function renderPublicSummary(meta, dateColumns, rows, paidMembers) {
     return `${dt.getMonth()+1}/${dt.getDate()}`;
   }).join(', ');
 
-  let html = `
-    <div class="summary-item">활동일<strong>${activeDays}일</strong></div>
-    <div class="summary-item">멤버<strong>${memberCount}명</strong></div>
-  `;
-  if (excludedCount > 0) {
-    html += `<div class="summary-item">제외일<strong>${excludedCount}일</strong><span style="font-size:0.75rem;color:var(--gray-500);display:block">(${excludedLabel})</span></div>`;
-  }
-
   let totalPenalty = 0;
   let unpaidPenalty = 0;
   for (const row of rows) {
@@ -80,10 +72,29 @@ function renderPublicSummary(meta, dateColumns, rows, paidMembers) {
       unpaidPenalty += penalty;
     }
   }
-  html += `<div class="summary-item">총 벌금<strong>${totalPenalty.toLocaleString()}원</strong></div>`;
-  html += `<div class="summary-item">미납 벌금<strong>${unpaidPenalty.toLocaleString()}원</strong></div>`;
+
+  const chips = [
+    { tone: 'cobalt', label: '활동일', value: `${activeDays}일` },
+    { tone: 'red',    label: '멤버',   value: `${memberCount}명` },
+    { tone: 'pink',   label: '제외일', value: excludedCount > 0 ? `${excludedCount}일` : '0일',
+      sub: excludedCount > 0 ? `(${excludedLabel})` : '' },
+    { tone: 'yellow', label: '총 벌금',   value: `${totalPenalty.toLocaleString()}원` },
+    { tone: 'ink',    label: '미납 벌금', value: `${unpaidPenalty.toLocaleString()}원` },
+  ];
+
+  const html = chips.map(c => `
+    <div class="summary-chip" data-tone="${c.tone}">
+      <span class="label">${c.label}</span>
+      <strong class="value">${c.value}</strong>
+      ${c.sub ? `<span class="sub">${c.sub}</span>` : ''}
+    </div>
+  `).join('');
 
   document.getElementById('publicSummary').innerHTML = html;
+
+  // Update header meta line
+  const metaEl = document.getElementById('publicMeta');
+  if (metaEl) metaEl.textContent = `${activeDays} DAYS · ${memberCount} MEMBERS`;
 }
 
 // ===== 날짜 범위 생성 =====
@@ -121,18 +132,18 @@ function renderPublicTable(dateColumns, rows, paidMembers, meta = {}) {
   for (const d of allDates) {
     html += `<th>${d}</th>`;
   }
-  html += '<th>인증률</th><th>벌금</th><th>납부</th></tr></thead><tbody>';
+  html += '<th>인증률</th><th>벌금</th><th>상태</th></tr></thead><tbody>';
 
   for (const row of rows) {
     html += `<tr><td>${row.name}</td>`;
     let ok = 0;
     for (const d of allDates) {
       if (futureDates.has(d) || !dateColumnsSet.has(d)) {
-        html += `<td class="future">?</td>`;
+        html += `<td class="future"><span class="cell-mark">?</span></td>`;
       } else {
         const v = row.verifications[d];
         if (v) ok++;
-        html += `<td class="${v ? 'pass' : 'fail'}">${v ? 'O' : 'X'}</td>`;
+        html += `<td class="${v ? 'pass' : 'fail'}"><span class="cell-mark">${v ? 'O' : 'X'}</span></td>`;
       }
     }
     const miss = activeDays - ok;
@@ -142,13 +153,13 @@ function renderPublicTable(dateColumns, rows, paidMembers, meta = {}) {
     html += `<td>${penalty.toLocaleString()}원</td>`;
 
     if (futureDates.size > 0) {
-      html += '<td>-</td>';
+      html += '<td><span class="status-badge none">-</span></td>';
     } else if (penalty === 0) {
-      html += '<td>-</td>';
+      html += '<td><span class="status-badge none">-</span></td>';
     } else if (paidMembers.includes(row.name)) {
-      html += '<td class="paid">완료</td>';
+      html += '<td><span class="status-badge paid">완료</span></td>';
     } else {
-      html += '<td class="unpaid">미납</td>';
+      html += '<td><span class="status-badge unpaid">미납</span></td>';
     }
     html += '</tr>';
   }
@@ -335,11 +346,72 @@ function setupReveal() {
   items.forEach(el => io.observe(el));
 }
 
+// ===== 히어로 패럴랙스 (마우스 따라가는 blob) =====
+function setupHeroParallax() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const blobs = hero.querySelectorAll('[data-parallax]');
+  if (!blobs.length) return;
+
+  hero.addEventListener('mousemove', (e) => {
+    const r = hero.getBoundingClientRect();
+    const cx = (e.clientX - r.left) / r.width - 0.5;
+    const cy = (e.clientY - r.top) / r.height - 0.5;
+    blobs.forEach(b => {
+      const sign = parseFloat(b.dataset.parallax) || 1;
+      b.style.transform = `translate(${cx * 30 * sign}px, ${cy * 30 * sign}px)`;
+    });
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    blobs.forEach(b => { b.style.transform = ''; });
+  });
+}
+
+// ===== 카운트업 (벌금 표 숫자) =====
+function setupCounters() {
+  const counters = document.querySelectorAll('[data-counter-target]');
+  if (!counters.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    counters.forEach(el => {
+      const target = parseInt(el.dataset.counterTarget, 10);
+      el.textContent = target.toLocaleString();
+    });
+    return;
+  }
+
+  const animate = (el) => {
+    const target = parseInt(el.dataset.counterTarget, 10) || 0;
+    const duration = 1400;
+    const t0 = performance.now();
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toLocaleString();
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animate(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(el => io.observe(el));
+}
+
 // ===== 초기화 =====
 document.addEventListener('DOMContentLoaded', async () => {
   setupNavigation();
   setupNavReveal();
   setupReveal();
+  setupHeroParallax();
+  setupCounters();
   await loadPayments();
   await loadRecordList();
 
