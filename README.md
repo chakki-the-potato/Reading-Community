@@ -26,14 +26,21 @@ book_meeting/
 ├── index.html                 # 메인 웹페이지
 ├── check_verification.py      # 인증 확인 CLI 스크립트
 ├── static/
-│   ├── css/style.css          # 스타일시트
-│   └── js/public.js           # 프론트엔드 로직
+│   ├── css/style.css
+│   └── js/public.js
 ├── records/
 │   ├── index.json             # 인증 기록 메타데이터
 │   ├── payments.json          # 벌금 납부 현황
-│   └── {년}/{월}/             # 분기별 인증 기록 (CSV)
-├── logo_image/                # 모임 이미지
-└── members/                   # 멤버 목록 (git 미추적)
+│   └── {년}/{월}/             # 분기별 인증 기록 (CSV + JSON)
+├── members/                   # 멤버 목록 (git 미추적)
+├── logo_image/
+└── .claude/
+    └── skills/                # Claude Code 운영 스킬
+        ├── member-setup/      # 멤버 파일 생성
+        ├── quarter-end/       # 분기 종료 인증
+        ├── quarter-end-exam/  # 분기 종료 인증 (시험 기간 포함)
+        ├── quarter-start/     # 새 분기 초기화
+        └── announcement/      # 카카오톡 공지 생성
 ```
 
 ## 시작하기
@@ -67,8 +74,8 @@ python3 check_verification.py \
 | `--output, -o` | 출력 CSV 경로 (선택) |
 | `--exclude, -x` | 인증 제외일 (선택) |
 | `--label, -l` | 기록 라벨, 예: "2월 1분기" (선택) |
-| `--exam-start` | 시험 기간 시작일 YYYY-MM-DD (선택, `--exam-end`와 함께 지정) |
-| `--exam-end` | 시험 기간 종료일 YYYY-MM-DD (선택, `--exam-start`와 함께 지정) |
+| `--exam-start` | 시험 기간 시작일 (선택, `--exam-end`와 함께 지정) |
+| `--exam-end` | 시험 기간 종료일 (선택, `--exam-start`와 함께 지정) |
 
 ### 인증 조건
 
@@ -79,7 +86,7 @@ python3 check_verification.py \
 
 #### 시험 기간 예외
 
-`--exam-start`/`--exam-end` 옵션으로 지정한 날짜 범위에는 **사진만 있어도 인증**으로 인정됩니다. 감상문 대신 공부 사진을 올리는 케이스를 위한 규칙입니다.
+`--exam-start`/`--exam-end` 옵션으로 지정한 날짜 범위에는 **사진만 있어도 인증**으로 인정됩니다.
 
 - 시험 기간 내: 사진 1장 = O (감상문 없어도 OK)
 - 시험 기간 내라도 사진 없이 감상문만 있으면 X
@@ -92,69 +99,23 @@ python3 check_verification.py \
 | 1~5일 | 일당 2,000원 (최대 10,000원) |
 | 6일 이후 | 일당 1,000원 추가 |
 
-예시: 10일 미인증 = 10,000원 + (5 x 1,000원) = **15,000원**
+예시: 10일 미인증 = 10,000원 + (5 × 1,000원) = **15,000원**
 
-## 운영 매뉴얼
+## 운영
 
-### 1단계 — 분기 종료
+Claude Code 스킬로 분기 전환 작업을 수행합니다.
 
-#### 1-1. 인증 기록 생성
+| 스킬 | 용도 |
+|------|------|
+| `/member-setup` | 새 분기 멤버 CSV 파일 생성 |
+| `/quarter-end` | 분기 종료 인증 기록 생성 + payments.json 업데이트 |
+| `/quarter-end-exam` | 동일 + 시험 기간 옵션 포함 |
+| `/quarter-start` | 새 분기 물음표 상태로 초기화 |
+| `/announcement` | 카카오톡 공지 텍스트 생성 |
 
-카카오톡 채팅 내보내기 파일을 준비한 뒤 스크립트를 실행합니다.
+### 벌금 납부 현황 수동 업데이트
 
-```bash
-python3 check_verification.py \
-  --members members/{YYYY}/{MM}/members_{월}{분기}.csv \
-  --start YYYY-MM-DD \
-  --end YYYY-MM-DD \
-  --output records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv \
-  --label "{월} {분기}" \
-  chat_export.txt
-```
-
-실행하면 자동으로 생성/갱신되는 파일:
-- `records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv` — 날짜별 O/X 인증 기록
-- `records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.json` — 메타데이터
-- `records/index.json` — 드롭다운 목록 자동 갱신
-
-##### 시험 기간이 포함된 분기
-
-분기 중 시험 기간이 있으면 `--exam-start`/`--exam-end`를 함께 넘겨 실행합니다. 해당 날짜 범위에는 사진만 있어도 인증으로 처리됩니다.
-
-```bash
-python3 check_verification.py \
-  --members members/{YYYY}/{MM}/members_{월}{분기}.csv \
-  --start YYYY-MM-DD \
-  --end YYYY-MM-DD \
-  --output records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv \
-  --exam-start YYYY-MM-DD \
-  --exam-end YYYY-MM-DD \
-  --label "{월} {분기}" \
-  chat_export.txt
-```
-
-- 시험 기간은 `--start`~`--end` 범위 안에 있어야 합니다.
-- 시험 기간은 결과 JSON 메타에 `exam_start`/`exam_end` 필드로 기록됩니다.
-- 한쪽만 지정하면 오류가 발생하니 두 옵션을 반드시 같이 넘겨주세요.
-
-#### 1-2. 오류 직접 수정
-
-파싱 오류가 있으면 아래 파일을 직접 편집합니다.
-
-```
-records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv
-```
-
-열면 아래와 같은 형식입니다. `O` / `X` / `?` 값을 직접 수정합니다.
-
-```
-이름,YYYY-MM-DD,YYYY-MM-DD,...,인증률,벌금
-홍길동,O,X,O,...,66%,2000원
-```
-
-#### 1-3. 벌금 납입 업데이트
-
-납입한 멤버가 생기면 `records/payments.json`에 이름을 추가합니다.
+납부한 멤버가 생기면 `records/payments.json`에 이름을 추가합니다.
 
 ```json
 {
@@ -162,93 +123,12 @@ records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv
 }
 ```
 
-- 키: `{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv` (records/ 이하 상대경로)
-- 값: 납입 완료한 멤버 이름 배열 (추가할 때마다 배열에 이름 append)
-
----
-
-### 2단계 — 다음 분기 시작
-
-#### 2-1. 멤버 목록 파일 생성
-
-```
-members/{YYYY}/{MM}/members_{월}{분기}.csv
-```
-
-첫 줄은 헤더 `이름`, 이후 한 줄에 멤버 한 명씩 작성합니다.
-
-```
-이름
-홍길동
-김철수
-...
-```
-
-폴더가 없으면 먼저 생성합니다 (`members/2026/04/` 등).
-
-#### 2-2. 다음 분기 기록 초기화 (드롭다운 생성 + 물음표 상태)
-
-스크립트를 새 날짜 범위로 실행하면 인증 전 상태(`?%`, `?원`)로 기록 파일이 생성되고, 드롭다운 목록(`records/index.json`)에도 자동으로 추가됩니다.
-
-```bash
-python3 check_verification.py \
-  --members members/{YYYY}/{MM}/members_{월}{분기}.csv \
-  --start YYYY-MM-DD \
-  --end YYYY-MM-DD \
-  --output records/{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv \
-  --label "{월} {분기}"
-```
-
-> 채팅 파일 인자를 생략하면 모든 멤버가 `?%` / `?원` 상태로 초기화됩니다.  
-> 이후 채팅이 쌓이면 같은 명령에 채팅 파일을 추가해 재실행하면 됩니다.
-
----
-
-## AI 프롬프트 양식
-
-아래 양식을 복사해서 `○○` 자리를 채운 뒤 Claude에게 그대로 넘기면 됩니다.
-
----
-
-```
-분기 전환 작업을 진행해줘.
-
-## 종료 분기
-
-- 라벨: ○월 ○분기
-- 시작일: ○○○○-○○-○○
-- 종료일: ○○○○-○○-○○
-
-## 다음 분기
-
-- 라벨: ○월 ○분기
-- 시작일: ○○○○-○○-○○
-- 종료일: ○○○○-○○-○○
-- 시험 기간 (있으면): ○○○○-○○-○○ ~ ○○○○-○○-○○
-- 멤버: 지난 분기 멤버 파일과 동일하게 생성해줘. 추가 인원이 있으면 내가 직접 추가할게.
-
-## 작업 순서
-
-1. check_verification.py를 실행해서 종료 분기 인증 기록을 생성해줘.
-2. records/payments.json에 종료 분기 키로 빈 배열 틀을 추가해줘. (납입 멤버는 내가 직접 채울게)
-3. 지난 분기 멤버 파일(members/ 폴더에서 가장 최근 것)을 기반으로 다음 분기 멤버 CSV 파일을 생성해줘.
-4. check_verification.py를 채팅 파일 없이 실행해서 다음 분기 기록을 물음표 상태로 초기화해줘.
-```
-
----
-
-### 채울 때 참고
-
-| 항목 | 예시 |
-|------|------|
-| 채팅 파일명 | `mission_20260406.txt` 형식 |
-| 시험 기간 | `--exam-start 2026-04-20 --exam-end 2026-04-28` 형식 |
+- 키: `{YYYY}/{MM}/verification_record_{시작일}_{종료일}.csv`
+- 값: 납입 완료한 멤버 이름 배열
 
 ---
 
 ## 카카오톡 공지 양식
-
-분기가 끝날 때마다 아래 두 공지를 카카오톡에 올립니다. `○` 자리를 채워서 사용하세요.
 
 ### 벌금 정산 공지
 
