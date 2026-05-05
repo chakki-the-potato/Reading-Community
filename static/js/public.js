@@ -39,7 +39,8 @@ function parseSavedCSV(text) {
     const name = cols[0];
     const verifications = {};
     dateColumns.forEach((d, i) => {
-      verifications[d] = cols[i + 1] === 'O';
+      const val = cols[i + 1];
+      verifications[d] = val === 'O' ? true : val === '?' ? null : false;
     });
     const rate = cols[rateIdx];
     const penalty = cols.slice(rateIdx + 1).join(',');
@@ -142,8 +143,12 @@ function renderPublicTable(dateColumns, rows, paidMembers, meta = {}) {
         html += `<td class="future"><span class="cell-mark">?</span></td>`;
       } else {
         const v = row.verifications[d];
-        if (v) ok++;
-        html += `<td class="${v ? 'pass' : 'fail'}"><span class="cell-mark">${v ? 'O' : 'X'}</span></td>`;
+        if (v === null) {
+          html += `<td class="future"><span class="cell-mark">?</span></td>`;
+        } else {
+          if (v) ok++;
+          html += `<td class="${v ? 'pass' : 'fail'}"><span class="cell-mark">${v ? 'O' : 'X'}</span></td>`;
+        }
       }
     }
     const miss = activeDays - ok;
