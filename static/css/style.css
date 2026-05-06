@@ -998,10 +998,20 @@ section, header, footer { position: relative; z-index: 2; }
 
 /* ===== CTA ===== */
 .section-cta {
+  position: relative;
   padding: 100px 0;
   background: var(--red); color: var(--paper-on-red);
   border-bottom: 4px solid var(--ink);
   overflow: hidden;
+}
+.cta-logo-bg {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  height: 280px;
+  width: auto;
+  opacity: 0.10;
+  pointer-events: none;
 }
 .cta-blob {
   position: absolute;
