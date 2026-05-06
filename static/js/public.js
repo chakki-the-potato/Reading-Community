@@ -269,12 +269,28 @@ async function loadRecordList() {
     return `<option value="${value}" ${i === 0 ? 'selected' : ''}>${label}</option>`;
   }).join('');
 
-  // 최신 기록 로드
-  const first = data.records[0];
-  if (first.upcoming) {
-    displayUpcoming(first);
+  const hashVal = window.location.hash.slice(1);
+  const opts = Array.from(selector.options);
+  const savedOption = hashVal ? opts.find(opt => opt.value === hashVal) : null;
+
+  let targetRecord;
+  if (savedOption) {
+    savedOption.selected = true;
+    if (hashVal.startsWith('upcoming:')) {
+      targetRecord = recordsData[parseInt(hashVal.split(':')[1])];
+    } else {
+      targetRecord = recordsData.find(r => r.filename === hashVal);
+    }
   } else {
-    await loadRecord(first.filename);
+    targetRecord = data.records[0];
+  }
+
+  if (targetRecord) {
+    if (targetRecord.upcoming) {
+      displayUpcoming(targetRecord);
+    } else {
+      await loadRecord(targetRecord.filename);
+    }
   }
 }
 
@@ -425,8 +441,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (value && value.startsWith('upcoming:')) {
       const idx = parseInt(value.split(':')[1]);
       displayUpcoming(recordsData[idx]);
+      history.replaceState(null, '', '#' + value);
     } else if (value) {
       await loadRecord(value);
+      history.replaceState(null, '', '#' + value);
     }
   });
 });
