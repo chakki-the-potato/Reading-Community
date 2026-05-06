@@ -190,20 +190,13 @@ section, header, footer { position: relative; z-index: 2; }
   height: 36px;
 }
 .nav-logo {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--serif); font-size: 22px; font-weight: 700;
-  color: var(--yellow); text-decoration: none;
+  display: inline-flex; align-items: center;
+  text-decoration: none;
 }
-.nav-logo .book-mark {
-  display: inline-block; width: 22px; height: 24px;
-  background: var(--yellow); position: relative;
-  animation: jiggle 2.4s ease-in-out infinite;
-  transform-origin: center;
-}
-.nav-logo .book-mark::before {
-  content: ''; position: absolute;
-  left: 3px; top: 2px; bottom: 2px; width: 2px;
-  background: var(--ink);
+.nav-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
 }
 .nav-links { display: flex; gap: 28px; font-size: 13px; font-weight: 600; }
 .nav-link {
