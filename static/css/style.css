@@ -1085,12 +1085,11 @@ section, header, footer { position: relative; z-index: 2; }
 .footer-brand {
   display: inline-flex; align-items: center; gap: 10px;
 }
-.footer-brand .badge {
-  display: inline-block;
-  background: var(--yellow); color: var(--ink);
-  padding: 2px 8px; font-weight: 700;
-  font-family: var(--serif);
-  animation: jiggle 3s ease-in-out infinite;
+.footer-logo {
+  height: 24px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
 }
 .footer-contact { color: var(--paper-soft); }
 
