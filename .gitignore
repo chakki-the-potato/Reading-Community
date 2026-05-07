@@ -2,6 +2,7 @@ venv/
 check_list/
 __pycache__/
 .claude/
+.superpowers/
 .playwright-mcp/
 screenshots/
 
