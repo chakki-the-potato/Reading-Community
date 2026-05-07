@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs><style>@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@500&display=swap');</style></defs>
+  <rect width="200" height="200" fill="#D62828" rx="6"/>
+  <text x="100" y="65" text-anchor="middle" font-family="'Black Han Sans', 'Noto Sans KR', sans-serif" font-size="64" fill="#ffffff" letter-spacing="-3">책</text>
+  <text x="100" y="123" text-anchor="middle" font-family="'Black Han Sans', 'Noto Sans KR', sans-serif" font-size="64" fill="#ffffff" letter-spacing="-3">책</text>
+  <text x="100" y="181" text-anchor="middle" font-family="'Black Han Sans', 'Noto Sans KR', sans-serif" font-size="64" fill="#ffffff" letter-spacing="-3">책</text>
+</svg>

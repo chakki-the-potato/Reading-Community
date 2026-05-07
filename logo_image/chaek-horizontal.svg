@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="7 3 193 54" width="193" height="54">
+  <defs><style>@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@500&display=swap');</style></defs>
+  <rect x="10" y="11" width="14" height="44" fill="#0a0a0a" rx="1"/>
+  <rect x="26" y="5" width="14" height="50" fill="#D62828" rx="1"/>
+  <rect x="42" y="11" width="14" height="44" fill="#0a0a0a" rx="1"/>
+  <text x="64" y="48" font-family="'Black Han Sans', 'Noto Sans KR', sans-serif" font-size="44" fill="#0a0a0a" letter-spacing="-2">책책책</text>
+</svg>
