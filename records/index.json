@@ -1,12 +1,20 @@
 {
   "records": [
     {
+      "filename": "2026/06/verification_record_20260601_20260630.csv",
+      "start_date": "2026-06-01",
+      "end_date": "2026-06-30",
+      "period_end": "2026-06-30",
+      "label": "6월 1분기",
+      "saved_at": "2026-06-01T11:52:36.986600"
+    },
+    {
       "filename": "2026/05/verification_record_20260518_20260531.csv",
       "start_date": "2026-05-18",
       "end_date": "2026-05-31",
       "period_end": "2026-05-31",
       "label": "5월 2분기",
-      "saved_at": "2026-05-18T16:39:57.371611"
+      "saved_at": "2026-06-01T11:45:31.313095"
     },
     {
       "filename": "2026/05/verification_record_20260504_20260517.csv",
