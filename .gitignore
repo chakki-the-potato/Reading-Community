@@ -3,6 +3,7 @@ check_list/
 __pycache__/
 .claude/
 .codex/
+.agents/
 .superpowers/
 .playwright-mcp/
 screenshots/
