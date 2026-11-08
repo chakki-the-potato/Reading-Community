@@ -214,6 +214,22 @@ section, header, footer { position: relative; z-index: 2; }
 .nav-link.active::after { transform: scaleX(1); }
 .nav-link.active { color: var(--yellow); }
 
+.admin-link {
+  position: absolute; top: 14px; right: 16px; z-index: 60;
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px; padding: 0 12px;
+  background: var(--paper); color: var(--ink);
+  border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  text-decoration: none;
+  transition: transform .15s var(--ease-out), box-shadow .15s var(--ease-out);
+}
+.admin-link:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+.admin-link svg {
+  width: 16px; height: 16px;
+  fill: none; stroke: currentColor; stroke-width: 2;
+}
+
 /* ===== Hero ===== */
 .hero {
   background: var(--yellow);
@@ -1173,6 +1189,7 @@ section, header, footer { position: relative; z-index: 2; }
   .container { padding: 0 20px; }
   body { font-size: 14.5px; }
   .nav-links { gap: 16px; font-size: 12px; }
+  .admin-link { top: 10px; right: 10px; }
   .nav-link { padding: 4px 0; }
   .hero { padding: 48px 0 64px; }
   .hero-spinner { width: 80px; height: 80px; top: 40px; right: 20px; }
